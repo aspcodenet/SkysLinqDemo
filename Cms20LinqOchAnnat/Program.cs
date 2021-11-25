@@ -11,21 +11,111 @@ namespace Cms20LinqOchAnnat
 {
     class Program
     {
+
+        static bool FilterPlayer(Player p)
+        {
+            if(p.GamesPlayed > 100)
+                return true;
+            return false;
+        }
+
         static void Main(string[] args)
         {
 
             var players = ReadAllFromFile();
+            ////foreach(var p in players)
+            ////{
+            ////    Console.WriteLine(p.Name);
+            ////}
 
-            var file = File.OpenText("c:\\hello.txt");
-            string line;
-            while ((line = file.ReadLine()) != null)
-            {
-                //if (line...)
+            //Console.WriteLine("Skriv in lag");
+            //string team = Console.ReadLine();
+            ////Skriv ut alla spelare i EDM
+            ////      SELECT * Player WHERE Team='{team}' ORDER By Namn DESC
+
+
+            //Console.WriteLine(players.Count());
+            ////SKriva ut hur många som gjort minst 30 mål
+            ////var filter = players.Where(r => r.Goals > 30).ToList();
+            ////Console.WriteLine(filter.Count());
+
+            //var cnt = players.Count(p => p.Goals > 30);
+
+
+
+            //var lista = players.Where(p => p.Team == "EDM").ToList(); //List<Player>
+
+
+            //foreach (var player in lista)
+            //{
+            //    Console.WriteLine($"{player.Name}");
+            //}
+
+            ////ALLT vi gör funkar ju på primitiva datatyper (int, string osv osv) men ofta är det objekt
+            ////vi jobbar med
+
+            //var allaSiffror = new[] { 11, 4,123,56,778,12345 };
+            //foreach( var i in allaSiffror.Where(t => t < 100) )
+            //{
+            //    Console.WriteLine(i);
+            //}
+            ////Minsta talet?
+            //var minsta = allaSiffror.Min();
+            //var avg = allaSiffror.Average();
+
+            //// average
+            //// summan av alla?
+
+
+            // FIRST  = single
+            // ta fram (ENDA) spelaren som heter "Mika Zibanejad"
+            var player = players.First(r => r.Name == "Mika Zibanejad");
+            player.Goals = player.Goals + 10;
+
+
+            // Skriv ut spelaren "Stefan Holmberg" poäng
+            player = players.FirstOrDefault(r => r.Name == "Stefan Holmberg");
+            //ANTINGEN OBJEKTET eller NULL
+            // Men den kraschar inte
+            if (player == null)
+                Console.WriteLine("Den nollan finns ju inte i topp 100 i NHL dummer");
+
+
+
+            //Alla vars namn börjar på P
+
+
+            //foreach (var player2 in players.Where(p => FilterPlayer(p)))
+            //{
+            //    Console.WriteLine(player2.Name);
+            //}
+
+            //LAMBDA EXPRESSION Where -> True eller false
+
+            foreach (var player2 in players.Where(p => p.Name.StartsWith("P") && (p.Team == "EDM" || p.Team == "NYR") ))
+            { 
+                Console.WriteLine(player2.Name); 
             }
 
-            file.Close();
-            //Från dokumentation 
-            // Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
+
+
+            foreach (var player2 in players.OrderBy(p => p.Name ))
+            {
+                Console.WriteLine(player2.Name);
+            }
+
+
+
+            //var file = File.OpenText("c:\\hello.txt");
+            //string line;
+            //while ((line = file.ReadLine()) != null)
+            //{
+            //    //if (line...)
+            //}
+
+            //file.Close();
+            ////Från dokumentation 
+            //// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
         }
 
 

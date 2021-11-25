@@ -10,7 +10,7 @@
         public string Name { get; set; }
         public string Season { get; set; }
         public string Team { get; set; }
-        public string Shoots { get; set; }
+        public string Shoots { get; set; } 
         public string Position { get; set; }
         public int GamesPlayed { get; set; }
         public int Goals { get; set; }
