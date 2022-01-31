@@ -1,11 +1,9 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Threading;
-using CsvHelper;
 
 namespace Cms20LinqOchAnnat
 {
@@ -21,12 +19,86 @@ namespace Cms20LinqOchAnnat
 
         static void Main(string[] args)
         {
+            var allaTal = new[] { 11, 4, 123, 56, 778, 12345 };
+            // SELECT * from allaTal where tal < 100
+            var result = allaTal.Where(tal => {
+                bool shouldBeInResult = false;
+                if (tal < 100)
+                    shouldBeInResult = true;
+                return shouldBeInResult;
+            }).ToList();
+
+            for(int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(i);
+            }
+
+            var listan = allaTal.Where(tal => tal < 100).ToList();
+            foreach (var i in listan)
+            {
+                Console.WriteLine(i);
+            }
+
+            foreach (var i in allaTal.Where(tal => tal < 100))
+            {
+                Console.WriteLine(i);
+            }
+
+
+            //_dbContext.Players.Include(e=>e.Team)
+
 
             var players = ReadAllFromFile();
-            ////foreach(var p in players)
-            ////{
-            ////    Console.WriteLine(p.Name);
-            ////}
+
+            Console.Write("Mata in lag att filtrera på:");
+            var teamFilter = Console.ReadLine();
+            var playersInEdmonton = players
+                .Where(player => player.Team == teamFilter)
+                .ToList();
+
+            //var playersInEdmonton = players
+            //    .Where(player => player.Team == teamFilter)
+            //    .Where(player => player.Position == "C")
+            //    .ToList();
+
+            var playersInEdmonton11 = players
+                .Where(player => 
+                    (player.Team == teamFilter && player.Position == "C") ||
+                    (player.Team == "COL" && player.Position == "B")
+                    )
+                .ToList();
+
+
+            //foreach (var thePlayer in players)
+            //{
+            //    if (thePlayer.Team == "EDM")
+            //        playersInEdmonton.Add(thePlayer);
+            //}
+            foreach (var thePlayer in playersInEdmonton)
+            {
+                Console.WriteLine($"{thePlayer.Name} ");
+            }
+
+
+            var a = new Player();
+            Console.WriteLine(a.Team);
+
+            //playersInEdmonton.OrderBy(player => player.Team);
+            var i = 0;
+            i = i + 1;
+
+            players = players.OrderByDescending(player => player.Points)
+                .ThenByDescending(player=>player.Goals)
+                .ToList();
+
+
+            players = players.OrderBy(player => player.Team).ToList();
+
+            players = players.OrderByDescending(player => player.Team).ToList();
+            foreach (var thePlayer in players)
+            {
+                Console.WriteLine($"{thePlayer.Name} ");
+            }
 
             //Console.WriteLine("Skriv in lag");
             //string team = Console.ReadLine();
@@ -54,11 +126,6 @@ namespace Cms20LinqOchAnnat
             ////ALLT vi gör funkar ju på primitiva datatyper (int, string osv osv) men ofta är det objekt
             ////vi jobbar med
 
-            //var allaSiffror = new[] { 11, 4,123,56,778,12345 };
-            //foreach( var i in allaSiffror.Where(t => t < 100) )
-            //{
-            //    Console.WriteLine(i);
-            //}
             ////Minsta talet?
             //var minsta = allaSiffror.Min();
             //var avg = allaSiffror.Average();
@@ -92,7 +159,8 @@ namespace Cms20LinqOchAnnat
 
             //LAMBDA EXPRESSION Where -> True eller false
 
-            foreach (var player2 in players.Where(p => p.Name.StartsWith("P") && (p.Team == "EDM" || p.Team == "NYR") ))
+            foreach (var player2 in players.Where(p => 
+                p.Name.StartsWith("P") && (p.Team == "EDM" || p.Team == "NYR") ))
             { 
                 Console.WriteLine(player2.Name); 
             }
